@@ -10,6 +10,14 @@ class UserService{
             myRes.error(res, error);
         }
     }
+
+    createUser = async (req:Request, res:Response) => {
+        try {
+            
+        } catch (error) {
+            
+        }
+    }
 }
 
 export default new UserService();
