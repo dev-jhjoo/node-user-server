@@ -1,7 +1,9 @@
 import { DataTypes, Model, Optional, Sequelize } from 'sequelize';
+import myTime from '../utils/myTime.util';
+
 
 interface UsersAttributes{
-    id:number;
+    id?:number;
     role:string;
     firstName:string;
     lastName:string;
@@ -13,7 +15,7 @@ interface UsersAttributes{
     updatedAt?:string;
 }
 
-interface UsersCreationAttrivutes extends Optional<UsersAttributes, 'id'>{}
+export interface UsersCreationAttrivutes extends Optional<UsersAttributes, 'id'>{}
 export interface UsersInstance extends Model<UsersAttributes, UsersCreationAttrivutes>, UsersAttributes {}
 
 const UsersModel = ( sequelize:Sequelize ) => sequelize.define<UsersInstance>(
@@ -38,3 +40,27 @@ const UsersModel = ( sequelize:Sequelize ) => sequelize.define<UsersInstance>(
 );
 
 export default UsersModel;
+
+import db from './index.model';
+export interface CreateUserDAO{
+    firstName:string;
+    lastName:string;
+    gender:string;
+    age:number;
+    email:string;
+    password:string;
+}
+export const createUser = async (createUserDao:CreateUserDAO) => {
+    const user = await db.users.create({
+        role:'NEW',
+        firstName:createUserDao.firstName, 
+        lastName:createUserDao.lastName, 
+        gender:createUserDao.gender, 
+        age:createUserDao.age, 
+        email:createUserDao.email, 
+        password:createUserDao.password,
+        createdAt:myTime.getNow
+        
+    });
+    return user;
+}
